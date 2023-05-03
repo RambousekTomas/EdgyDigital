@@ -25,13 +25,14 @@ Celý projekt verzuj pomocí gitu do svého repositáře, který nám po dokonč
 
 ##Estimations:
 Project init 3h
-Navigation 1h
+Navigation 1h - done in 1h
 Header 30m
-Footer 30m
+Footer 30m - tabs done in 20m
 Redux 30m
 Animations 4h
 
-Login screen 30m
+Login screen
+Form 30m
 
 Main screen
 Design with layout 2h
@@ -39,7 +40,8 @@ Detail 2h
 Favourite feature 1h
 Search by name 2h
 Local storage 2h
-Scan screen 3h
+Scanner 3h
+Bottom sheet 2h
 
 Favourite screen
 List of favourites 30m
