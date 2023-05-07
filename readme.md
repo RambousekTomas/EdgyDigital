@@ -26,7 +26,7 @@ Celý projekt verzuj pomocí gitu do svého repositáře, který nám po dokonč
 ##Estimations:
 Project init 3h
 Navigation 1h - done in 1h
-Header 30m
+Header 30m - done in 4 h 30m
 Footer 30m - tabs done in 20m
 Redux 30m - done in 45m
 Animations 4h
@@ -49,3 +49,5 @@ Edit feature 4h
 
 ##Notes
 Analysis and estimations: 2h
+
+Header took me a lot more time due to uneexpected issues with opening and closing drawer. Had to use different library.

@@ -1,24 +1,31 @@
+import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
 import { StyleSheet } from 'react-native'
-import 'react-native-gesture-handler'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
+import MenuDrawer from './components/menu/MenuDrawer'
 import SplashScreen from './components/screens/splash/Splash'
 import Navigation from './routes/Navigation'
 import { store } from './store/Store'
 
 const App = () => {
+  console.log('app')
   const isLoading = false
 
   if (isLoading) return <SplashScreen />
 
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <SafeAreaView style={styles.flex}>
-              <Navigation isUserAtuhorized={false} />
-        </SafeAreaView>
-      </NavigationContainer>
+      <SafeAreaView style={styles.flex}>
+        <GestureHandlerRootView style={styles.flex}>
+          <MenuDrawer>
+            <NavigationContainer>
+              <Navigation />
+            </NavigationContainer>
+          </MenuDrawer>
+        </GestureHandlerRootView>
+      </SafeAreaView>
     </Provider>
   )
 }
