@@ -28,7 +28,7 @@ Project init 3h
 Navigation 1h - done in 1h
 Header 30m
 Footer 30m - tabs done in 20m
-Redux 30m
+Redux 30m - done in 45m
 Animations 4h
 
 Login screen
