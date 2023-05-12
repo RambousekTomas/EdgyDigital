@@ -11,8 +11,14 @@ const Header = () => {
 
   return (
     <View style={styles.header}>
-      <Pressable onPress={menuDrawer.openDrawer} style={styles.munuBtn}>
-        <MCIcon name="menu" size={32} />
+      <Pressable
+        onPress={menuDrawer.openDrawer}
+        style={styles.munuButton}
+        android_ripple={{
+          color: 'rgba(125, 140, 1, 0.7)',
+        }}
+      >
+        <MCIcon name="menu" size={32} color="black" />
       </Pressable>
       <Text style={styles.userName}>{userName}</Text>
     </View>
@@ -26,15 +32,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 48,
     backgroundColor: 'rgb(186 208 3)',
+    paddingHorizontal: 8,
     elevation: 4,
   },
-  munuBtn: {
-    justifyContent: 'center',
-    alignItems: 'center',
+  munuButton: {
     height: 48,
     width: 48,
-    borderRightWidth: 1,
-    borderColor: 'hsla(0, 0%, 0%, 0.20)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 8,
   },
   userName: {
     flex: 1,
@@ -42,5 +48,6 @@ const styles = StyleSheet.create({
     paddingLeft: 8,
     fontSize: 20,
     fontWeight: 'bold',
+    color: 'black',
   },
 })

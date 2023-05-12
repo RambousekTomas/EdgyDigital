@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
-  containerView: { rowGap: 8 },
+  containerView: { rowGap: 8, paddingHorizontal: 16, paddingBottom: 16 },
   controlView: {},
   errorText: {
     color: 'red',

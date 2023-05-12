@@ -1,16 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
+import Layout from '../../layout/Layout'
 import LoginForm from './form/LoginForm'
-
+//TODO fix styles for smaller screens
 const LoginScreen = () => {
   return (
-    <LinearGradient
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 1 }}
-      colors={['rgb(186 208 3)', 'rgb(115 179 64)']}
-      style={styles.gradient}
-    >
+    <Layout>
       <View style={styles.imageView}>
         <Image
           style={styles.imageLogo}
@@ -28,7 +23,7 @@ const LoginScreen = () => {
         />
       </View>
       <LoginForm />
-    </LinearGradient>
+    </Layout>
   )
 }
 
@@ -38,21 +33,20 @@ const styles = StyleSheet.create({
   gradient: {
     flex: 1,
     justifyContent: 'center',
-    padding: 36,
+    padding: 16,
   },
   imageView: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 32,
   },
   imagePortal: {
     width: '70%',
-    height: undefined,
-    aspectRatio: 1,
-    marginBottom: 50,
+    height: '60%',
   },
   imageLogo: {
-    marginTop: -80,
     width: '100%',
-    height: 200,
+    height: '40%',
   },
 })
