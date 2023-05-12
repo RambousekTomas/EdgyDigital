@@ -38,17 +38,17 @@ const MenuDrawer = ({ children }: PropsWithChildren) => {
   }, [])
 
   return (
-    <Drawer
-      open={open}
-      onOpen={openDrawer}
-      onClose={closeDrawer}
-      renderDrawerContent={renderMenu}
-      drawerType="front"
-    >
-      <MenuDrawerContext.Provider value={{ openDrawer, closeDrawer }}>
+    <MenuDrawerContext.Provider value={{ openDrawer, closeDrawer }}>
+      <Drawer
+        open={open}
+        onOpen={openDrawer}
+        onClose={closeDrawer}
+        renderDrawerContent={renderMenu}
+        drawerType="front"
+      >
         {children}
-      </MenuDrawerContext.Provider>
-    </Drawer>
+      </Drawer>
+    </MenuDrawerContext.Provider>
   )
 }
 

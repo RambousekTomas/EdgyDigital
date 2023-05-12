@@ -10,7 +10,6 @@ import Navigation from './routes/Navigation'
 import { store } from './store/Store'
 
 const App = () => {
-  console.log('app')
   const isLoading = false
 
   if (isLoading) return <SplashScreen />

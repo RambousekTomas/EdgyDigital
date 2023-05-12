@@ -32,7 +32,7 @@ Redux 30m - done in 45m
 Animations 4h
 
 Login screen
-Form 30m
+Form 30m - done in 3h
 
 Main screen
 Design with layout 2h
@@ -51,3 +51,4 @@ Edit feature 4h
 Analysis and estimations: 2h
 
 Header took me a lot more time due to uneexpected issues with opening and closing drawer. Had to use different library.
+Login screen took me longer, due to experimentation with grapgical design and with adding ripples correctly.

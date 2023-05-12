@@ -29,12 +29,20 @@ const Navigation = () => {
 
   return (
     <>
-      {isUserAtuhorized ? (
+      {!isUserAtuhorized ? (
         <AuthStack.Navigator screenOptions={{ headerShown: false }}>
           <AuthStack.Screen name="login" component={LoginScreen} />
         </AuthStack.Navigator>
       ) : (
-        <Tab.Navigator screenOptions={{ header }}>
+        <Tab.Navigator
+          screenOptions={{
+            header,
+            tabBarStyle: { backgroundColor: 'rgb(186 208 3)' },
+            tabBarInactiveTintColor: '#888888',
+            tabBarActiveTintColor: '#333333',
+            tabBarLabelStyle: { fontSize: 14 },
+          }}
+        >
           <Tab.Screen
             name="main"
             component={MainScreen}

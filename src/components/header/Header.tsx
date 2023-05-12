@@ -21,12 +21,11 @@ const Header = () => {
 
 export default memo(Header)
 
-// TODO: polish styles for shadows + add ios
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     height: 48,
-    backgroundColor: 'white',
+    backgroundColor: 'rgb(186 208 3)',
     elevation: 4,
   },
   munuBtn: {
