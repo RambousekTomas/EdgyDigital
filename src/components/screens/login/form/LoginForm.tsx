@@ -84,7 +84,7 @@ const LoginForm = () => {
       <View style={styles.buttonView}>
         <Pressable
           onPress={(e) => void handleSubmit(onSubmit)(e)}
-          android_ripple={{ color: 'rgba(125, 140, 1, 0.7)', borderless: true }}
+          android_ripple={{ color: 'rgba(125, 140, 1, 0.7)' }}
           style={styles.loginButton}
         >
           <Text style={styles.loginButtonText}>Login</Text>
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
     borderRadius: 20,
+    overflow: 'hidden',
     elevation: 3,
   },
   loginButton: {
@@ -110,6 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(186 208 3)',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 20,
   },
   loginButtonText: {
     fontSize: 16,

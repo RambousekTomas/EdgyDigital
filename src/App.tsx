@@ -1,6 +1,6 @@
-import 'react-native-gesture-handler'
 import { NavigationContainer } from '@react-navigation/native'
-import { StyleSheet } from 'react-native'
+import { StatusBar, StyleSheet } from 'react-native'
+import 'react-native-gesture-handler'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { Provider } from 'react-redux'
@@ -20,6 +20,7 @@ const App = () => {
         <GestureHandlerRootView style={styles.flex}>
           <MenuDrawer>
             <NavigationContainer>
+              <StatusBar backgroundColor={'rgb(186 208 3)'} />
               <Navigation />
             </NavigationContainer>
           </MenuDrawer>
