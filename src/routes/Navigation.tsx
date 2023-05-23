@@ -1,14 +1,19 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createStackNavigator } from '@react-navigation/stack'
+import {
+  TransitionPresets,
+  createStackNavigator,
+} from '@react-navigation/stack'
 import { useCallback } from 'react'
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Header from '../components/header/Header'
+import CharacterDetailScreen from '../components/screens/characterDetail/CharacterDetail'
 import FavouritesScreen from '../components/screens/favourites/Favourites'
 import LoginScreen from '../components/screens/login/Login'
 import MainScreen from '../components/screens/main/Main'
 import ScanScreen from '../components/screens/scan/Scan'
 import { useAppSelector } from '../store/hooks/Hooks'
 import { selectIsAuthorized } from '../store/slices/UserSlice'
+import { Character } from '../types/Types'
 
 export type AuthStackParams = {
   login: undefined
@@ -20,8 +25,30 @@ export type TabParams = {
   scan: undefined
 }
 
+export type MainStackParams = {
+  characters: undefined
+  characterDetail: { character: Character }
+}
+
 const Tab = createBottomTabNavigator<TabParams>()
 const AuthStack = createStackNavigator<AuthStackParams>()
+const MainStack = createStackNavigator<MainStackParams>()
+
+const MainStackScreens = () => {
+  return (
+    <MainStack.Navigator screenOptions={{ headerShown: false }}>
+      <MainStack.Screen name="characters" component={MainScreen} />
+      <MainStack.Screen
+        name="characterDetail"
+        component={CharacterDetailScreen}
+        options={{
+          presentation: 'transparentModal',
+          ...TransitionPresets.ScaleFromCenterAndroid,
+        }}
+      />
+    </MainStack.Navigator>
+  )
+}
 
 const Navigation = () => {
   const isUserAtuhorized = useAppSelector(selectIsAuthorized)
@@ -29,7 +56,7 @@ const Navigation = () => {
 
   return (
     <>
-      {!isUserAtuhorized ? (
+      {isUserAtuhorized ? (
         <AuthStack.Navigator screenOptions={{ headerShown: false }}>
           <AuthStack.Screen name="login" component={LoginScreen} />
         </AuthStack.Navigator>
@@ -45,7 +72,7 @@ const Navigation = () => {
         >
           <Tab.Screen
             name="main"
-            component={MainScreen}
+            component={MainStackScreens}
             options={{
               tabBarLabel: 'Main',
               tabBarIcon: ({ color, size }) => (
