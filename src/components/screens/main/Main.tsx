@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   FlatList,
   ListRenderItemInfo,
@@ -11,7 +11,7 @@ import Animated, { FadeOutDown } from 'react-native-reanimated'
 import { useFetchCharacters } from '../../../api/Requests'
 import { Character } from '../../../types/Types'
 import Layout from '../../layout/Layout'
-import { StyleSheet, Text, View } from 'react-native'
+import SearchBar from '../../searchBar/SearchBar'
 import Spinner from '../../spinner/Spinner'
 import CharacterPreview from './characterPreview/CharacterPreview'
 
@@ -22,21 +22,38 @@ const renderItem = ({ item: character }: ListRenderItemInfo<Character>) => (
 )
 
 const MainScreen = () => {
+  const [searchPhrase, setSearchPhrase] = useState('')
+  const [searchFocuse, setSearchFocuse] = useState(false)
   const [continuousLoading, setContinuousLoading] = useState<true | undefined>(
     undefined,
   )
-  const { characters, isLoading, fetchMoreCharacters } = useFetchCharacters()
+  const { characters, isLoading, fetchMoreCharacters, fetchCharacters } =
+    useFetchCharacters()
 
   const onPressEnableContinuousLoading = useCallback(() => {
     setContinuousLoading(true)
     fetchMoreCharacters()
   }, [])
 
+  useEffect(() => {
+    setContinuousLoading(undefined)
+    searchPhrase ? fetchCharacters({ name: searchPhrase }) : fetchCharacters()
+  }, [searchPhrase])
 
   return (
     <Layout>
-    <View>
-      <Text>Main</Text>
+      <SearchBar
+        setSearchPhrase={setSearchPhrase}
+        searchFocus={searchFocuse}
+        setSearchFocus={setSearchFocuse}
+      />
+      <View
+        onStartShouldSetResponder={() => {
+          setSearchFocuse(false)
+          return false
+        }}
+        style={styles.flex}
+      >
         <FlatList
           data={characters}
           renderItem={renderItem}
@@ -46,6 +63,11 @@ const MainScreen = () => {
           contentContainerStyle={styles.contentContainerStyle}
           onEndReached={continuousLoading && fetchMoreCharacters}
           ListFooterComponent={<Spinner animating={isLoading} size={40} />}
+          ListEmptyComponent={
+            isLoading ? undefined : (
+              <Text style={styles.listEmptyText}>No characters found</Text>
+            )
+          }
         />
       </View>
       {!continuousLoading && (
@@ -68,6 +90,7 @@ export default MainScreen
 const styles = StyleSheet.create({
   listColumnWrapper: { columnGap: 8 },
   contentContainerStyle: { rowGap: 8 },
+  flex: { flex: 1 },
   buttonView: {
     height: 40,
     marginTop: 16,
@@ -88,5 +111,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
+  },
+  listEmptyText: {
+    fontSize: 16,
+    fontWeight: '500',
+    textAlign: 'center',
   },
 })

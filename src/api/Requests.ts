@@ -1,57 +1,73 @@
 import axios, { CancelToken } from 'axios'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { Character, CharactersResponse } from '../types/Types'
 import { axiosInstance } from './AxiosConfig'
+
+export type FilterCharacters = {
+  name?: string
+}
+
+const filterCharacters = (filterOptions?: FilterCharacters) => {
+  if (!filterOptions) return ''
+  const filterParts: string[] = []
+  if (filterOptions.name) filterParts.push(`name=${filterOptions.name}`)
+
+  return `?${filterParts.join('&')}`
+}
 
 export const useFetchCharacters = () => {
   const [characters, setCharacters] = useState<Character[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [nextURL, setNextURL] = useState<string | undefined>(undefined)
 
-  const fetchCharacters = useCallback(
-    async (cancelToken: CancelToken) => {
+  const fetch = useCallback(
+    async (url: string, cancelToken: CancelToken, prev?: Character[]) => {
       try {
         setIsLoading(true)
-        const response = await axiosInstance.get<CharactersResponse>(
-          nextURL ? nextURL : '/character/',
-          { cancelToken },
-        )
+        const response = await axiosInstance.get<CharactersResponse>(url, {
+          cancelToken,
+        })
         if (response.status === 200) {
-          setCharacters([...characters, ...response.data.results])
+          setCharacters([...(prev || []), ...response.data.results])
           setNextURL(response.data.info.next || undefined)
           setIsLoading(false)
           return
         } else {
-          throw new Error('Failed to fetch users')
+          setCharacters([])
+          setIsLoading(false)
+          throw new Error('Failed to fetch characters')
         }
       } catch (e) {
         if (axios.isCancel(e)) {
           console.log('Data fetching cancelled inside fetch')
         } else {
+          setCharacters([])
           if (e instanceof Error) console.log(`ERROR: ${e.name} ${e.message}`)
         }
         setIsLoading(false)
       }
     },
-    [characters, nextURL],
+    [],
+  )
+
+  const fetchCharacters = useCallback(
+    (filterOptions?: FilterCharacters) => {
+      setCharacters([])
+      const url = `/character/${filterCharacters(filterOptions)}`
+      const source = axios.CancelToken.source()
+      void fetch(url, source.token)
+      return () => source.cancel('Data fetching cancelled due to unmount')
+    },
+    [fetch],
   )
 
   const fetchMoreCharacters = useCallback(() => {
-    console.log('fetchMoreCharacters')
+    if (!nextURL) return
 
     const source = axios.CancelToken.source()
-    void fetchCharacters(source.token)
+    void fetch(nextURL, source.token, characters)
     return () => source.cancel('Data fetching cancelled due to unmount')
-  }, [fetchCharacters])
+  }, [fetch, nextURL, characters])
 
-  useEffect(() => {
-    console.log('Init fetch')
-
-    const source = axios.CancelToken.source()
-    void fetchCharacters(source.token)
-    return () => source.cancel('Data fetching cancelled due to unmount')
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  return { characters, isLoading, fetchMoreCharacters }
+  return { characters, isLoading, fetchMoreCharacters, fetchCharacters }
 }

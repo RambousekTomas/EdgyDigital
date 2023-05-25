@@ -38,7 +38,7 @@ Main screen
 Design with layout 2h - done in 3h
 Detail 2h   - done in 3h
 Favourite feature 1h
-Search by name 2h
+Search by name 2h - done in 4h
 Local storage 2h
 Scanner 3h
 Bottom sheet 2h
@@ -56,3 +56,6 @@ Login screen took me longer, due to experimentation with grapgical design and wi
 
 I had computer malfuctuation which seems related to GPU, it took me 3 days to recover - reinstall windows in my spare time. 
 After that I had to downgrade reanimated to 2.17.0 because version 3.1.0 had issue with compiling its module dependencies with cmake in 3.18.0.
+
+I have underestimated search because I wanted to have continuous loading and filter options in one place, which took a lot more time to clean up.
+
