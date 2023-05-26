@@ -2,12 +2,8 @@ import React, { useCallback } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import { useAppDispatch } from '../../../../store/hooks/Hooks'
-import { authorize, set_name } from '../../../../store/slices/UserSlice'
-
-type FormData = {
-  userName: string
-  password: string
-}
+import { loginThunk } from '../../../../store/thunks/LoginThunk'
+import { UserLogin } from '../../../../types/Types'
 
 const LoginForm = () => {
   const dispatch = useAppDispatch()
@@ -16,18 +12,16 @@ const LoginForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({
+  } = useForm<UserLogin>({
     defaultValues: {
-      userName: '',
+      username: '',
       password: '',
     },
   })
 
   const onSubmit = useCallback(
-    (data: FormData) => {
-      console.log(data)
-      dispatch(authorize())
-      dispatch(set_name(data.userName))
+    (data: UserLogin) => {
+      dispatch(loginThunk(data))
     },
     [dispatch],
   )
@@ -50,10 +44,10 @@ const LoginForm = () => {
               value={value}
             />
           )}
-          name="userName"
+          name="username"
         />
         <Text style={styles.errorText}>
-          {errors.userName && errors.userName.message}
+          {errors.username && errors.username.message}
         </Text>
       </View>
 

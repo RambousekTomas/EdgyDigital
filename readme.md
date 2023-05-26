@@ -36,10 +36,10 @@ Form 30m - done in 3h
 
 Main screen
 Design with layout 2h - done in 3h
-Detail 2h   - done in 3h
-Favourite feature 1h
+Detail 2h - done in 3h
+Favourite feature 1h - done in 1h
 Search by name 2h - done in 4h
-Local storage 2h
+Local storage 2h - done in 2h
 Scanner 3h
 Bottom sheet 2h
 
@@ -53,9 +53,7 @@ Analysis and estimations: 2h
 Header took me a lot more time due to uneexpected issues with opening and closing drawer. Had to use different library.
 Login screen took me longer, due to experimentation with grapgical design and with adding ripples correctly.
 
-
-I had computer malfuctuation which seems related to GPU, it took me 3 days to recover - reinstall windows in my spare time. 
+I had computer malfuctuation which seems related to GPU, it took me 3 days to recover - reinstall windows in my spare time.
 After that I had to downgrade reanimated to 2.17.0 because version 3.1.0 had issue with compiling its module dependencies with cmake in 3.18.0.
 
 I have underestimated search because I wanted to have continuous loading and filter options in one place, which took a lot more time to clean up.
-

@@ -2,11 +2,11 @@ import { memo } from 'react'
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useAppSelector } from '../../store/hooks/Hooks'
-import { selectName } from '../../store/slices/UserSlice'
+import { selectUsername } from '../../store/slices/UserSlice'
 import { useMenuDrawerContext } from '../menu/MenuDrawer'
 
 const Header = () => {
-  const userName = useAppSelector(selectName)
+  const username = useAppSelector(selectUsername)
   const menuDrawer = useMenuDrawerContext()
 
   return (
@@ -20,7 +20,7 @@ const Header = () => {
       >
         <MCIcon name="menu" size={32} color="black" />
       </Pressable>
-      <Text style={styles.userName}>{userName}</Text>
+      <Text style={styles.username}>{username}</Text>
     </View>
   )
 }
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 8,
   },
-  userName: {
+  username: {
     flex: 1,
     textAlignVertical: 'center',
     paddingLeft: 8,

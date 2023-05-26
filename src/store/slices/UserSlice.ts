@@ -20,19 +20,20 @@ export const userSlice = createSlice({
     revoke_authorization: (state) => {
       state.isAuthorized = false
     },
-    set_name: (state, action: PayloadAction<string>) => {
+    set_username: (state, action: PayloadAction<string | undefined>) => {
       state.name = action.payload
     },
   },
 })
 
-export const { authorize, revoke_authorization, set_name } = userSlice.actions
+export const { authorize, revoke_authorization, set_username } =
+  userSlice.actions
 
 export const selectIsAuthorized = (state: RootState) => state.user.isAuthorized
-export const selectName = (state: RootState) => state.user.name
+export const selectUsername = (state: RootState) => state.user.name
 
 export const selectUser = createSelector(
-  [selectName, selectIsAuthorized],
+  [selectUsername, selectIsAuthorized],
   (name, isAuthorized) => {
     return { isAuthorized, name }
   },

@@ -10,7 +10,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useAppDispatch } from '../../store/hooks/Hooks'
-import { revoke_authorization } from '../../store/slices/UserSlice'
+import { logoutThunk } from '../../store/thunks/LogoutThunk'
 import { useMenuDrawerContext } from './MenuDrawer'
 
 const Menu = () => {
@@ -18,7 +18,7 @@ const Menu = () => {
   const { closeDrawer } = useMenuDrawerContext()
 
   const onPressLogout = useCallback(() => {
-    dispatch(revoke_authorization())
+    dispatch(logoutThunk())
     closeDrawer()
   }, [closeDrawer, dispatch])
   return (

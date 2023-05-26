@@ -1,7 +1,7 @@
 import { RouteProp, useRoute } from '@react-navigation/native'
 import React, { useCallback } from 'react'
 import {
-  Image,
+  ImageBackground,
   Linking,
   ScrollView,
   StyleSheet,
@@ -11,6 +11,7 @@ import {
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { MainStackParams } from '../../../routes/Navigation'
+import FavouriteButton from '../../favouriteButton/FavouriteButton'
 import { getSpeciesBGColor } from '../main/characterPreview/CharacterPreview'
 
 const getGenderIconName = (gender: string): string => {
@@ -39,7 +40,13 @@ const CharacterDetailScreen = () => {
   return (
     <View style={styles.background}>
       <View style={styles.card}>
-        <Image source={{ uri: character.image }} style={styles.image} />
+        <ImageBackground
+          source={{ uri: character.image }}
+          style={styles.imageBackground}
+          imageStyle={styles.image}
+        >
+          <FavouriteButton character={character} />
+        </ImageBackground>
         <Text style={styles.name}>{character.name}</Text>
         <View style={styles.textRow}>
           <Text style={styles.generalText}>#{character.id}</Text>
@@ -106,9 +113,12 @@ const styles = StyleSheet.create({
     elevation: 4,
   },
   flex: { flex: 1 },
-  image: {
+  imageBackground: {
     width: '100%',
-    height: 240,
+    height: 200,
+    alignItems: 'flex-end',
+  },
+  image: {
     resizeMode: 'contain',
     borderRadius: 8,
   },

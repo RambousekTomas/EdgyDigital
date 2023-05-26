@@ -56,7 +56,7 @@ const Navigation = () => {
 
   return (
     <>
-      {isUserAtuhorized ? (
+      {!isUserAtuhorized ? (
         <AuthStack.Navigator screenOptions={{ headerShown: false }}>
           <AuthStack.Screen name="login" component={LoginScreen} />
         </AuthStack.Navigator>

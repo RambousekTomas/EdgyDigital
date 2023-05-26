@@ -1,3 +1,8 @@
+export interface UserLogin {
+  username: string
+  password: string
+}
+
 export interface ErrorResponse {
   error: string
 }

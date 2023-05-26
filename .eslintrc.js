@@ -11,6 +11,7 @@ module.exports = {
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    "plugin:prettier/recommended"
   ],
   overrides: [],
   parser: '@typescript-eslint/parser',
@@ -19,7 +20,6 @@ module.exports = {
   },
   plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
   rules: {
-    indent: ['error', 2, { SwitchCase: 1 }],
     quotes: ['error', 'single', { avoidEscape: true }],
     semi: ['error', 'never'],
     'no-empty-function': 'off',
