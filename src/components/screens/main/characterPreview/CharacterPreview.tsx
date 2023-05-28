@@ -13,7 +13,9 @@ import {
 import { MainStackParams } from '../../../../routes/Navigation'
 import { Character } from '../../../../types/Types'
 
-type CharacterPreviewProps = Character
+type CharacterPreviewProps = {
+  character: Character
+}
 
 export const getSpeciesBGColor = (species: string): StyleProp<TextStyle> => {
   if (species === 'Human') return { backgroundColor: '#73B340' }
@@ -21,7 +23,7 @@ export const getSpeciesBGColor = (species: string): StyleProp<TextStyle> => {
   return { backgroundColor: '#A4ACAF' }
 }
 
-const CharacterPreview = (character: CharacterPreviewProps) => {
+const CharacterPreview = ({ character }: CharacterPreviewProps) => {
   const navigation = useNavigation<StackNavigationProp<MainStackParams>>()
   const onPressDisplayDetail = () =>
     navigation.navigate('characterDetail', { character })
@@ -45,6 +47,7 @@ export default CharacterPreview
 const styles = StyleSheet.create({
   card: {
     flex: 1 / 2,
+    maxWidth: '49%',
     backgroundColor: '#FED54A',
     borderRadius: 12,
     padding: 12,

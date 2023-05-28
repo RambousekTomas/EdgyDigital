@@ -44,8 +44,8 @@ Scanner 3h
 Bottom sheet 2h
 
 Favourite screen
-List of favourites 30m
-Edit feature 4h
+List of favourites 30m - done with Favourite feature of main screen
+Edit feature 4h - done in 4h
 
 ##Notes
 Analysis and estimations: 2h

@@ -18,7 +18,7 @@ import CharacterPreview from './characterPreview/CharacterPreview'
 const keyExtractor = (character: Character) => character.id.toString()
 
 const renderItem = ({ item: character }: ListRenderItemInfo<Character>) => (
-  <CharacterPreview {...character} />
+  <CharacterPreview character={character} />
 )
 
 const MainScreen = () => {
