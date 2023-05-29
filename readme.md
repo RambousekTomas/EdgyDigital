@@ -66,6 +66,9 @@ Changing order of items is possible via drag & drop.
 
 When developing scanning feature I wanted to implement react native vision package, but due to incompatibility issues on current version I have lost a lot of time trying to make it build.
 It took me about 3 hours which I don't count into work done.
+For final solution I have used react-native-camera package, which works great.
+Scanning feature is automatic, just generate qr code with link to the character or use one of generated codes in assets/qr folder.
+New scan will start when bottom sheet is closed.
 
 ##Review and Assesment
 iOS compatibility warning - iOS version is not configured completely and not tested
