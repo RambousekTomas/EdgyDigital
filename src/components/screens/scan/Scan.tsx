@@ -40,8 +40,6 @@ const ScanScreen = () => {
   const { character, isFetching, fetchCharacter } = useFetchCharacter()
   const onBarCodeScanned = useCallback(
     ({ barcodes }: GoogleVisionBarcodesDetectedEvent) => {
-      console.log('Number of codes: ' + barcodes.length.toString())
-
       const filteredBarcodes = barcodes.filter((barcode) =>
         barcode.data.match(
           '^https://rickandmortyapi.com/api/character/[0-9]+$',
@@ -49,7 +47,6 @@ const ScanScreen = () => {
       )
 
       if (filteredBarcodes.length) {
-        console.log(JSON.stringify(filteredBarcodes[0]))
         setScanning(undefined)
         fetchCharacter(filteredBarcodes[0].data)
         bottomSheetRef.current?.expand()

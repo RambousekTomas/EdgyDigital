@@ -20,7 +20,7 @@ const FavouritePreview = ({
 }: FavouritePreviewProps) => {
   return (
     <Pressable
-      onLongPress={onLongPress}
+      onLongPress={canEdit ? onLongPress : undefined}
       disabled={isActive}
       style={[
         styles.card,

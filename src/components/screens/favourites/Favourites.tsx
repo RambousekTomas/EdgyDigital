@@ -46,27 +46,27 @@ const FavouritesScreen = () => {
         <Pressable
           onPress={onPressEnableEdit}
           android_ripple={{ color: 'rgba(125, 140, 1, 0.7)' }}
-          style={styles.buttonLoadMore}
+          style={styles.btnEdit}
         >
-          <Text style={styles.btnLoadMoreText}>
-            {edit ? 'Stop edit' : 'Edit'}
-          </Text>
+          <Text style={styles.btnEditText}>{edit ? 'Stop edit' : 'Edit'}</Text>
         </Pressable>
       </View>
-      <DraggableFlatList
-        data={favourites}
-        renderItem={renderItem(edit)}
-        keyExtractor={keyExtractor}
-        onDragEnd={onDragEnd}
-        contentContainerStyle={styles.listContentContainer}
-        ListEmptyComponent={
-          favourites.length ? undefined : (
-            <Text style={styles.listEmptyText}>
-              No favourite characters found
-            </Text>
-          )
-        }
-      />
+      <View style={styles.flex}>
+        <DraggableFlatList
+          data={favourites}
+          renderItem={renderItem(edit)}
+          keyExtractor={keyExtractor}
+          onDragEnd={onDragEnd}
+          contentContainerStyle={styles.listContentContainer}
+          ListEmptyComponent={
+            favourites.length ? undefined : (
+              <Text style={styles.listEmptyText}>
+                No favourite characters found
+              </Text>
+            )
+          }
+        />
+      </View>
     </Layout>
   )
 }
@@ -74,6 +74,7 @@ const FavouritesScreen = () => {
 export default FavouritesScreen
 
 const styles = StyleSheet.create({
+  flex: { flex: 1 },
   buttonView: {
     height: 40,
     marginBottom: 16,
@@ -83,14 +84,14 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     elevation: 3,
   },
-  buttonLoadMore: {
+  btnEdit: {
     height: 40,
     backgroundColor: 'rgb(186 208 3)',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 20,
   },
-  btnLoadMoreText: {
+  btnEditText: {
     fontSize: 16,
     fontWeight: 'bold',
     color: 'white',
