@@ -40,8 +40,11 @@ Detail 2h - done in 3h
 Favourite feature 1h - done in 1h
 Search by name 2h - done in 4h
 Local storage 2h - done in 2h
-Scanner 3h
-Bottom sheet 2h
+
+Scan screen
+Permissions (added lately - no estimate) - done in 30m
+Scanner 3h - done in 30m
+Bottom sheet 2h - done in 2h
 
 Favourite screen
 List of favourites 30m - done with Favourite feature of main screen
@@ -57,3 +60,6 @@ I had computer malfuctuation which seems related to GPU, it took me 3 days to re
 After that I had to downgrade reanimated to 2.17.0 because version 3.1.0 had issue with compiling its module dependencies with cmake in 3.18.0.
 
 I have underestimated search because I wanted to have continuous loading and filter options in one place, which took a lot more time to clean up.
+
+When developing scanning feature I wanted to implement react native vision package, but due to incompatibility issues on current version I have lost a lot of time trying to make it build.
+It took me about 3 hours which I don't count into work done.
