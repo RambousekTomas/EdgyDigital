@@ -1,75 +1,63 @@
 import BottomSheet, { BottomSheetScrollView } from '@gorhom/bottom-sheet'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Platform, StyleSheet, Text } from 'react-native'
+import { useQuery } from '@tanstack/react-query'
+import { isNotNilOrEmpty } from 'ramda-adjunct'
+import { useEffect, useRef, useState } from 'react'
+import { Linking, StyleSheet, View } from 'react-native'
 import {
   GoogleVisionBarcodesDetectedEvent,
   RNCamera,
 } from 'react-native-camera'
-import {
-  PERMISSIONS,
-  Permission,
-  check,
-  request,
-} from 'react-native-permissions'
-import { useFetchCharacter } from '../../../api/Requests'
+import { fetchCharacter } from '../../../api/Requests'
+import { colors } from '../../../styles/colors'
+import { requestCameraPermission } from '../../../utils/requestCameraPermission'
+import Button from '../../buttons/Button'
+import CharacterCard from '../../character/CharacterCard'
 import Layout from '../../layout/Layout'
 import Spinner from '../../spinner/Spinner'
-import DetailCard from './detailCard/DetailCard'
+import { Text } from '../../text/Text'
 
-const requestCameraPermission = async () => {
-  let cameraPermission: Permission = PERMISSIONS.ANDROID.CAMERA
-  if (Platform.OS === 'android') cameraPermission = PERMISSIONS.ANDROID.CAMERA
-  if (Platform.OS === 'ios') cameraPermission = PERMISSIONS.IOS.CAMERA
-  const cameraPermissionStatus = await check(cameraPermission)
-  if (cameraPermissionStatus === 'granted') return true
-  if (
-    cameraPermissionStatus === 'limited' ||
-    cameraPermissionStatus === 'unavailable'
-  )
-    return false
-
-  const newCameraPermission = await request(cameraPermission)
-  return newCameraPermission === 'granted'
-}
+const SNAP_POINTS = ['90%']
 
 const ScanScreen = () => {
   const [canUseCamera, setCanUseCamera] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
-  const [scanning, setScanning] = useState<true | undefined>(true)
+  const [isLoadingScanner, setIsLoadingScanner] = useState(true)
+  const [scanning, setScanning] = useState(true)
+  const [characterUrl, setCharacterUrl] = useState<string>('')
 
-  const { character, isFetching, fetchCharacter } = useFetchCharacter()
-  const onBarCodeScanned = useCallback(
-    ({ barcodes }: GoogleVisionBarcodesDetectedEvent) => {
-      const filteredBarcodes = barcodes.filter((barcode) =>
-        barcode.data.match(
-          '^https://rickandmortyapi.com/api/character/[0-9]+$',
-        ),
-      )
+  const { data: character, isFetching } = useQuery({
+    queryKey: ['character', characterUrl],
+    queryFn: () => fetchCharacter(characterUrl),
+    enabled: isNotNilOrEmpty(characterUrl),
+  })
 
-      if (filteredBarcodes.length) {
-        setScanning(undefined)
-        fetchCharacter(filteredBarcodes[0].data)
-        bottomSheetRef.current?.expand()
-      }
-    },
-    [],
-  )
+  const onBarCodeScanned = ({
+    barcodes,
+  }: GoogleVisionBarcodesDetectedEvent) => {
+    const filteredBarcodes = barcodes.filter((barcode) =>
+      barcode.data.match('^https://rickandmortyapi.com/api/character/[0-9]+$'),
+    )
+
+    if (filteredBarcodes.length) {
+      setScanning(false)
+      setCharacterUrl(filteredBarcodes[0].data)
+      bottomSheetRef.current?.expand()
+    }
+  }
 
   useEffect(() => {
     void requestCameraPermission().then((result) => {
       setCanUseCamera(result)
-      setIsLoading(false)
+      setIsLoadingScanner(false)
     })
   }, [])
 
   const bottomSheetRef = useRef<BottomSheet>(null)
-  const snapPoints = useMemo(() => ['25%', '80%'], [])
 
-  const onCloseStartScanning = useCallback(() => {
-    setScanning(true)
-  }, [])
+  const onCloseStartScanning = () => setScanning(true)
 
-  if (isLoading)
+  const openAppSettings = () => void Linking.openSettings()
+
+  if (isLoadingScanner)
     return (
       <Layout>
         <Spinner size={40} />
@@ -78,7 +66,13 @@ const ScanScreen = () => {
   if (!canUseCamera)
     return (
       <Layout>
-        <Text>Unable to use camera</Text>
+        <View style={styles.rowGap}>
+          <Text variant="body">
+            Scanning is not allowed due to missing camera permission. To allow
+            scanning enable permission to use camera.
+          </Text>
+          <Button title="App settings" onPress={openAppSettings} />
+        </View>
       </Layout>
     )
 
@@ -87,7 +81,9 @@ const ScanScreen = () => {
       <Layout>
         <RNCamera
           style={styles.camera}
-          onGoogleVisionBarcodesDetected={scanning && onBarCodeScanned}
+          onGoogleVisionBarcodesDetected={
+            scanning ? onBarCodeScanned : undefined
+          }
           googleVisionBarcodeType={
             // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
             RNCamera.Constants.GoogleVisionBarcodeDetection.BarcodeType.QR_CODE
@@ -98,20 +94,18 @@ const ScanScreen = () => {
       <BottomSheet
         ref={bottomSheetRef}
         index={-1}
-        snapPoints={snapPoints}
+        snapPoints={SNAP_POINTS}
         enablePanDownToClose={true}
-        backgroundStyle={{
-          borderTopRightRadius: 12,
-          borderTopLeftRadius: 12,
-          backgroundColor: '#FED54A',
-        }}
+        backgroundStyle={styles.bottomSheetBackground}
         onClose={onCloseStartScanning}
       >
         {!scanning && (
           <>
             {isFetching && <Spinner size={40} />}
-            <BottomSheetScrollView>
-              {character && <DetailCard character={character} />}
+            <BottomSheetScrollView style={styles.bottomSheetView}>
+              <Layout>
+                {character && <CharacterCard character={character} />}
+              </Layout>
             </BottomSheetScrollView>
           </>
         )}
@@ -130,5 +124,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 12,
     elevation: 3,
+  },
+  bottomSheetBackground: {
+    borderTopRightRadius: 12,
+    borderTopLeftRadius: 12,
+    borderWidth: 1,
+    borderColor: colors.background.light,
+    backgroundColor: colors.background.main,
+  },
+  bottomSheetView: {
+    flex: 1,
+  },
+  rowGap: {
+    rowGap: 8,
   },
 })

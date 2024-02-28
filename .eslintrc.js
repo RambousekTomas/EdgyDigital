@@ -17,8 +17,11 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.json',
+    "ecmaFeatures": {
+      "jsx": true
+    }
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'prettier'],
+  plugins: ['react', 'react-native', 'react-hooks', '@typescript-eslint', 'prettier', '@tanstack/query'],
   rules: {
     quotes: ['error', 'single', { avoidEscape: true }],
     semi: ['error', 'never'],
@@ -32,7 +35,23 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'warn',
     'prettier/prettier': 'error',
     "react/jsx-uses-react": "off",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "@tanstack/query/exhaustive-deps": "error",
+    "@tanstack/query/no-rest-destructuring": "warn",
+    "@tanstack/query/stable-query-client": "error",
+    "no-restricted-imports": ["error", {
+      "paths": [{
+        "name": "react-native",
+        "importNames": ["Text"],
+        "message": "Please import the custom Text component instead of the one from React Native."
+      }]
+    }],
+    "react-native/no-unused-styles": 2,
+    "react-native/split-platform-components": 2,
+    "react-native/no-inline-styles": 2,
+    "react-native/no-color-literals": 2,
+    "react-native/no-raw-text": 2,
+    "react-native/no-single-element-style-arrays": 2
   },
   settings: {
     react: {

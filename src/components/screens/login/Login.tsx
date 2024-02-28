@@ -2,7 +2,7 @@
 import { Image, ImageSourcePropType, StyleSheet, View } from 'react-native'
 import Layout from '../../layout/Layout'
 import LoginForm from './form/LoginForm'
-//TODO fix styles for smaller screens
+
 const LoginScreen = () => {
   return (
     <Layout>
@@ -30,11 +30,6 @@ const LoginScreen = () => {
 export default LoginScreen
 
 const styles = StyleSheet.create({
-  gradient: {
-    flex: 1,
-    justifyContent: 'center',
-    padding: 16,
-  },
   imageView: {
     flex: 1,
     justifyContent: 'center',

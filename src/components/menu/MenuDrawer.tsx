@@ -1,12 +1,6 @@
-import {
-  PropsWithChildren,
-  createContext,
-  useCallback,
-  useContext,
-  useState,
-} from 'react'
+import { PropsWithChildren, createContext, useContext, useState } from 'react'
 import { Drawer } from 'react-native-drawer-layout'
-import Menu from './Menu'
+import Menu from './components/Menu'
 
 type MenuDrawerControlContextType = {
   openDrawer: () => void
@@ -27,15 +21,10 @@ export const useMenuDrawerContext = () => {
 
 const MenuDrawer = ({ children }: PropsWithChildren) => {
   const [open, setOpen] = useState(false)
-  const renderMenu = useCallback(() => <Menu />, [])
 
-  const openDrawer = useCallback(() => {
-    setOpen(true)
-  }, [])
-
-  const closeDrawer = useCallback(() => {
-    setOpen(false)
-  }, [])
+  const renderMenu = () => <Menu />
+  const openDrawer = () => setOpen(true)
+  const closeDrawer = () => setOpen(false)
 
   return (
     <MenuDrawerContext.Provider value={{ openDrawer, closeDrawer }}>

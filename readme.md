@@ -96,3 +96,49 @@ Over all I have enjoyed developing this task.
 
 Total time spent on this project was:
 35H 35M which is approximately 4,5 MD
+
+Evaluation:
+Zadání projektu bylo kompletně splněno a s výstupem Tomáše jsem spokojený. Tomáš dodal i obsáhlou dokumentaci, kde popisuje své estimace, problémy na které narazil a věci, které nejsou funkční, nebo by mohly být zpracovány lépe. Má estimace byla zhruba 3MD, Tomáš to zpracoval za 4.5 MD, s tím že ale uvedl, kde ten čas ztratil. Jednalo se primárně o problémy s kompatibilitou knihoven, problémy s osobním PC a problémy s buildem, samotná implementace pak byla do mé estimace splněna.
+
+Z technického hlediska, tam ne všechno fungovalo. Testoval jsem to na simulátoru na ios, což mohl být ten problém, ale v aktuálním stavu se nelze odhlásit, jelikož tlačítko pro otevření bočního menu je mimo obrazovku a detail charakteru nelze zavřít.
+
+Co se kódu a struktury projektu týče:
+
+me likey:
+Projekt je strukturován dobře, jsem schopen si představit aplikaci, která by rostla a stále byla snadno spravovatelná
+Naming konvence, organizace a psaní komponentů je konzistentní napříč celým projektem
+Handlování requestů je řešeno přes vlastní custom hooky, což by určitě šlo zaměnit za elegantnější řešení, které by bylo i optimálnější, jako například react-query, rtk-query, ale toto zpracování je taky v pořádku, s tím, že tam správně obstarává i errory, stavy požadavku a správně požívá memoizaci funkcí
+Použití reduxu bylo nad rámec, ale i tak ho zahrnul a navržený to má dobře
+Definování statických funkcí a helper funkcí mimo komponent
+Otypování celé aplikace
+
+	
+me no likey:
+Nadměrné použití useCallback. Dle mého názoru předčasně optimalizuje části kódu, které nejsou potřeba optimalizovat, což může mít naopak za následek zhoršení výkonu
+Několik částí by šlo extrahovat do vlastním komponentů, aby se dodržel DRY princip (každopádně aspoň si je toho vědom, uvádí to do dokumentace)
+iOS nebylo funkční
+Některé obrazovky by chtělo více rozčlenit, aby nebyly tak komplexní a zbytečně se nepřerenderovala celá obrazovka, ale jen její části
+Repetitivní definování stylu. Taky by mohlo být více DRY například zavedením nějakého theme configu
+Design - ale v zadání jsem uvedl, že na to nenahlížím, takže to neberu jako zápor, ale mé oči pálí do teď. :) 
+
+Update:
+I have decided to update this showcase solution, because I wasn't satisfied with outcome.
+So I have invested aproximately another 12 hours to clean-up and rewrite some parts of the application.
+
+First change was introduction of tanstack query async state management for fetch requests.
+I have replaced my custom hook implementation with this robust solution to enhance code readability and extensibility.
+It took me almots 8 hours of work due to issue with infinite query. My queryFn used url params, which in react native does not have full implementation and requires to add polyfill to get work. This was easy to fix, but getting the error was a bit trickey because the error message does not showed up in console.
+In the end the solusion replaced a lot of code which was tangled to custom hook and works out of book.
+
+Second change was decouple components into smaller parts to improve DRY concept, which enhance readability and extensibility without additional clutter.
+Still, there are some parts which could also extracted, but I want to move on to other project, which will be DRY from the start.
+
+- replacement of custom fetch hook with tanstack query
+- decouple components into smaller parts to improve DRY
+- removal of useCallback
+- defining basic typography and colors
+- change of whole design
+
+## iOS still not working due to lack of hardware.
+
+Additional note: I know I should have split the update into smaller commits.

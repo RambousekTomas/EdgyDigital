@@ -1,8 +1,9 @@
 import _ from 'lodash'
-import React, { memo, useCallback, useRef } from 'react'
+import React, { memo, useRef } from 'react'
 import { Keyboard, StyleSheet, TextInput, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import { colors } from '../../styles'
 
 type SearchBarProps = {
   searchFocus: boolean
@@ -17,22 +18,17 @@ const SearchBar = ({
 }: SearchBarProps) => {
   const searchInput = useRef<TextInput | null>(null)
 
-  const resetSearch = useCallback(() => {
+  const resetSearch = () => {
     setSearchPhrase('')
     searchInput.current?.clear()
     Keyboard.dismiss()
-  }, [])
+  }
 
-  const onSearchFocus = useCallback(() => {
-    setSearchFocus(true)
-  }, [])
+  const onSearchFocus = () => setSearchFocus(true)
 
-  const debouncedOnChange = useCallback(
-    _.debounce((text: string) => {
-      setSearchPhrase(text)
-    }, 500),
-    [],
-  )
+  const debouncedOnChange = _.debounce((text: string) => {
+    setSearchPhrase(text)
+  }, 500)
 
   return (
     <View style={styles.container}>
@@ -64,7 +60,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     borderRadius: 20,
-    backgroundColor: 'white',
+    backgroundColor: colors.background.main,
     paddingHorizontal: 4,
     marginBottom: 16,
     elevation: 4,

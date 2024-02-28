@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { StyleSheet, TouchableOpacity } from 'react-native'
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { useAppDispatch, useAppSelector } from '../../store/hooks/Hooks'
@@ -17,13 +17,13 @@ const FavouriteButton = ({ character }: FavouriteButtonProps) => {
   const dispatch = useAppDispatch()
   const isFavourite = useAppSelector(selectIsFavourite(character.id))
 
-  const onPressMakeFavourite = useCallback(() => {
+  const onPressMakeFavourite = () => {
     dispatch(add_favourite(character))
-  }, [])
+  }
 
-  const onPressRemoveFavourite = useCallback(() => {
+  const onPressRemoveFavourite = () => {
     dispatch(remove_favourite(character))
-  }, [])
+  }
 
   return (
     <TouchableOpacity
@@ -33,7 +33,7 @@ const FavouriteButton = ({ character }: FavouriteButtonProps) => {
       <MCIcon
         name={isFavourite ? 'star' : 'star-outline'}
         size={40}
-        color="#bad003"
+        color="rgb(247, 210, 22)"
       />
     </TouchableOpacity>
   )
@@ -43,8 +43,8 @@ export default FavouriteButton
 
 const styles = StyleSheet.create({
   icon: {
-    width: 50,
-    height: 50,
+    width: 48,
+    height: 48,
     alignItems: 'center',
     justifyContent: 'center',
   },

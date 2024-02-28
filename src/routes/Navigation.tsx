@@ -3,11 +3,10 @@ import {
   TransitionPresets,
   createStackNavigator,
 } from '@react-navigation/stack'
-import { useCallback } from 'react'
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Header from '../components/header/Header'
-import CharacterDetailScreen from '../components/screens/characterDetail/CharacterDetail'
-import FavouritesScreen from '../components/screens/favourites/Favourites'
+import { CharacterDetailScreen } from '../components/screens/characterDetail/CharacterDetail'
+import { FavouritesScreen } from '../components/screens/favourites/Favourites'
 import LoginScreen from '../components/screens/login/Login'
 import MainScreen from '../components/screens/main/Main'
 import ScanScreen from '../components/screens/scan/Scan'
@@ -52,7 +51,7 @@ const MainStackScreens = () => {
 
 const Navigation = () => {
   const isUserAtuhorized = useAppSelector(selectIsAuthorized)
-  const header = useCallback(() => <Header />, [])
+  const header = () => <Header />
 
   return (
     <>
@@ -64,10 +63,14 @@ const Navigation = () => {
         <Tab.Navigator
           screenOptions={{
             header,
-            tabBarStyle: { backgroundColor: 'rgb(186 208 3)' },
             tabBarInactiveTintColor: '#888888',
             tabBarActiveTintColor: '#333333',
             tabBarLabelStyle: { fontSize: 14 },
+            tabBarStyle: {
+              paddingTop: 5,
+              paddingBottom: 5,
+              height: 60,
+            },
           }}
         >
           <Tab.Screen

@@ -7,7 +7,7 @@ const Layout = ({ children }: PropsWithChildren) => {
     <LinearGradient
       start={{ x: 0, y: 0 }}
       end={{ x: 1, y: 1 }}
-      colors={['rgb(186 208 3)', 'rgb(115 179 64)']}
+      colors={['#ffffff', '#fffefa']}
       style={styles.gradient}
     >
       {children}

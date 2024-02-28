@@ -1,19 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import {
-  FlatList,
-  ListRenderItemInfo,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native'
-import Animated, { FadeOutDown } from 'react-native-reanimated'
-import { useFetchCharacters } from '../../../api/Requests'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import { isNilOrEmpty } from 'ramda-adjunct'
+import React, { useState } from 'react'
+import { FlatList, ListRenderItemInfo, StyleSheet, View } from 'react-native'
+import { fetchCharacters } from '../../../api/Requests'
+import { sharedStyles } from '../../../styles/styles'
 import { Character } from '../../../types/Types'
+import { CharacterPreview } from '../../character/CharacterPreview'
 import Layout from '../../layout/Layout'
 import SearchBar from '../../searchBar/SearchBar'
 import Spinner from '../../spinner/Spinner'
-import CharacterPreview from './characterPreview/CharacterPreview'
+import { Text } from '../../text/Text'
 
 const keyExtractor = (character: Character) => character.id.toString()
 
@@ -23,64 +19,57 @@ const renderItem = ({ item: character }: ListRenderItemInfo<Character>) => (
 
 const MainScreen = () => {
   const [searchPhrase, setSearchPhrase] = useState('')
-  const [searchFocuse, setSearchFocuse] = useState(false)
-  const [continuousLoading, setContinuousLoading] = useState<true | undefined>(
-    undefined,
-  )
-  const { characters, isLoading, fetchMoreCharacters, fetchCharacters } =
-    useFetchCharacters()
+  const [searchFocus, setSearchFocus] = useState(false)
 
-  const onPressEnableContinuousLoading = useCallback(() => {
-    setContinuousLoading(true)
-    fetchMoreCharacters()
-  }, [])
+  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
+    queryKey: ['characters', searchPhrase],
+    queryFn: ({ pageParam }) =>
+      fetchCharacters(
+        pageParam,
+        isNilOrEmpty(searchPhrase) ? undefined : { name: searchPhrase },
+      ),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) => lastPage.nextPage,
+  })
 
-  useEffect(() => {
-    setContinuousLoading(undefined)
-    searchPhrase ? fetchCharacters({ name: searchPhrase }) : fetchCharacters()
-  }, [searchPhrase])
+  const onEndReached = () => {
+    if (hasNextPage) {
+      void fetchNextPage()
+    }
+  }
 
   return (
     <Layout>
       <SearchBar
         setSearchPhrase={setSearchPhrase}
-        searchFocus={searchFocuse}
-        setSearchFocus={setSearchFocuse}
+        searchFocus={searchFocus}
+        setSearchFocus={setSearchFocus}
       />
       <View
         onStartShouldSetResponder={() => {
-          setSearchFocuse(false)
+          setSearchFocus(false)
           return false
         }}
-        style={styles.flex}
+        style={sharedStyles.flex}
       >
         <FlatList
-          data={characters}
+          data={data?.pages.flatMap((page) => page.data) ?? []}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           numColumns={2}
           columnWrapperStyle={styles.listColumnWrapper}
           contentContainerStyle={styles.contentContainerStyle}
-          onEndReached={continuousLoading && fetchMoreCharacters}
-          ListFooterComponent={<Spinner animating={isLoading} size={40} />}
+          onEndReached={onEndReached}
+          ListFooterComponent={<Spinner animating={isFetching} size={40} />}
           ListEmptyComponent={
-            isLoading ? undefined : (
-              <Text style={styles.listEmptyText}>No characters found</Text>
+            isFetching ? null : (
+              <Text variant="title" style={styles.listEmptyText}>
+                No characters found
+              </Text>
             )
           }
         />
       </View>
-      {!continuousLoading && (
-        <Animated.View exiting={FadeOutDown} style={styles.buttonView}>
-          <Pressable
-            onPress={onPressEnableContinuousLoading}
-            android_ripple={{ color: 'rgba(125, 140, 1, 0.7)' }}
-            style={styles.buttonLoadMore}
-          >
-            <Text style={styles.btnLoadMoreText}>Load more</Text>
-          </Pressable>
-        </Animated.View>
-      )}
     </Layout>
   )
 }
@@ -90,28 +79,6 @@ export default MainScreen
 const styles = StyleSheet.create({
   listColumnWrapper: { columnGap: 8 },
   contentContainerStyle: { rowGap: 8 },
-  flex: { flex: 1 },
-  buttonView: {
-    height: 40,
-    marginTop: 16,
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    borderRadius: 20,
-    overflow: 'hidden',
-    elevation: 3,
-  },
-  buttonLoadMore: {
-    height: 40,
-    backgroundColor: 'rgb(186 208 3)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 20,
-  },
-  btnLoadMoreText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: 'white',
-  },
   listEmptyText: {
     fontSize: 16,
     fontWeight: '500',
